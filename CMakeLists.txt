@@ -17,4 +17,4 @@ endif()
 
 file(GLOB SOURCES *.h *.cpp)
 
-add_executable(${PROJECT_NAME} ${SOURCES} tgaimage.cpp tgaimage.h)
+add_executable(${PROJECT_NAME} ${SOURCES} tgaimage.cpp tgaimage.h model.cpp model.h geometry.h)
