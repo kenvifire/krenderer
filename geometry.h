@@ -21,8 +21,8 @@ template <class t> struct Vec2 {
     inline Vec2<t> operator -(const Vec2<t> &V) const { return Vec2<t>(u-V.u, v-V.v); }
     inline Vec2<t> operator *(float f)          const { return Vec2<t>(u*f, v*f); }
     template <class > friend std::ostream& operator<<(std::ostream& s, Vec2<t>& v);
-    inline t       operator [](const int i) const {return raw[i]; }
-};
+    t& operator[](const size_t i)       { assert(i<2); return i<=0 ? x : y; }
+    const t& operator[](const size_t i) const { assert(i<2); return i<=0 ? x : y; }};
 
 template <class t> struct Vec3 {
     union {
@@ -37,9 +37,13 @@ template <class t> struct Vec3 {
     inline Vec3<t> operator -(const Vec3<t> &v) const { return Vec3<t>(x-v.x, y-v.y, z-v.z); }
     inline Vec3<t> operator *(float f)          const { return Vec3<t>(x*f, y*f, z*f); }
     inline t       operator *(const Vec3<t> &v) const { return x*v.x + y*v.y + z*v.z; }
+    t& operator[](const size_t i)       { assert(i<3); return i<=0 ? x : (1==i ? y : z); }
+    const t& operator[](const size_t i) const { assert(i<3); return i<=0 ? x : (1==i ? y : z); }
     float norm () const { return std::sqrt(x*x+y*y+z*z); }
     Vec3<t> & normalize(t l=1) { *this = (*this)*(l/norm()); return *this; }
     template <class > friend std::ostream& operator<<(std::ostream& s, Vec3<t>& v);
+
+
 };
 
 typedef Vec2<float> Vec2f;
@@ -55,6 +59,10 @@ template <class t> std::ostream& operator<<(std::ostream& s, Vec2<t>& v) {
 template <class t> std::ostream& operator<<(std::ostream& s, Vec3<t>& v) {
     s << "(" << v.x << ", " << v.y << ", " << v.z << ")\n";
     return s;
+}
+
+template<class t> Vec3<t> cross(Vec3<t> v1, Vec3<t> v2) {
+    return Vec3<t>(v1.y*v2.z - v1.z*v2.y, v1.z*v2.x - v1.x*v2.z, v1.x*v2.y - v1.y*v2.x);
 }
 
 #endif //__GEOMETRY_H__
